@@ -1,2 +1,5 @@
 # wreck
- e2e load testing tool
+
+E2E Load Testing Framework
+
+!! CURRENTLY UNDER CONSTRUCTION !!
