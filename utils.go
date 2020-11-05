@@ -1,4 +1,4 @@
-package wreckhttp
+package wreck
 
 import (
 	"fmt"

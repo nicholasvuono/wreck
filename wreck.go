@@ -1,34 +1,54 @@
-package main
+package wreck
 
 import (
 	"fmt"
-	"wreckhttp"
+	"time"
+
+	"github.com/nicholasvuono/wreckhttp"
 )
 
-func main() {
+type Request = wreckhttp.Request
 
-	requests := []wreckhttp.Request{
-		wreckhttp.Request{
-			Method:  "GET",
-			URL:     "http://github.com/nicholasvuono",
-			Headers: nil,
-			Body:    nil,
-		},
-		wreckhttp.Request{
-			Method: "POST",
-			URL:    "https://httpbin.org/post",
-			Headers: map[string][]string{
-				"Accept": []string{"application/json"},
-			},
-			Body: map[string]string{
-				"name":  "Test API Guy",
-				"email": "testapiguy@email.com",
-			},
-		},
+type Options struct {
+	Vus      int
+	Duration int
+}
+
+func Batch(options Options, requests []Request) []string {
+	var responses []string
+	now := time.Now()
+	after := now.Add(time.Duration(options.Duration) * time.Second)
+	for {
+		now = time.Now()
+		semaphoreChan := make(chan struct{}, options.Vus)
+		responsesChan := make(chan string)
+
+		defer func() {
+			close(semaphoreChan)
+			close(responsesChan)
+		}()
+
+		for i := 0; i < options.Vus; i++ {
+			go func() {
+				batch, err := wreckhttp.Batch(requests)
+				explain(err)
+				response := batch.Send()
+				responseString := fmt.Sprintf("%v", response)
+				responsesChan <- responseString
+				<-semaphoreChan
+			}()
+		}
+
+		for {
+			response := <-responsesChan
+			responses = append(responses, response)
+			if len(responsesChan) == 0 {
+				break
+			}
+		}
+		if now.After(after) {
+			break
+		}
 	}
-	batch := wreckhttp.NewBatch(requests)
-	responses := batch.Send()
-	for _, res := range responses {
-		fmt.Println(res.GetResponse())
-	}
+	return responses
 }
