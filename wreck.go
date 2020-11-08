@@ -9,18 +9,23 @@ import (
 	"github.com/nicholasvuono/wreckhttp"
 )
 
+//Request struct mimicking the one found in the wreckhttp library
 type Request = wreckhttp.Request
 
+//Options struct specifies the number of virtual users, test duration, or request iterations. In other words, the load tests cofiguration options.
 type Options struct {
 	Vus        int
 	Duration   int
 	Iterations int
 }
 
+//Global wait group for go routines within this test
 var wg sync.WaitGroup
 
+//Global string slice to capture all responses
 var responses []string
 
+//Batch is a function to send batch requests based on specified load test configuration options.
 func Batch(options Options, requests []Request) []string {
 	if options.Iterations != 0 && options.Duration == 0 {
 		concurrrentBatchIterations(options, requests)
@@ -33,6 +38,7 @@ func Batch(options Options, requests []Request) []string {
 	return responses
 }
 
+//Sends batch requests concurently based on the duration specified
 func concurrentBatchDuration(options Options, requests []Request) {
 	after := time.Now().Add(time.Duration(options.Duration) * time.Second)
 	for {
@@ -48,6 +54,7 @@ func concurrentBatchDuration(options Options, requests []Request) {
 	}
 }
 
+//Sends batch requests concurrently based on the number of iterations specified.
 func concurrrentBatchIterations(options Options, requests []Request) {
 	for i := 0; i < options.Iterations; i++ {
 		for i := 0; i < options.Vus; i++ {
@@ -58,6 +65,7 @@ func concurrrentBatchIterations(options Options, requests []Request) {
 	}
 }
 
+//Logic to actually send the batch requests and append responses to the global slice.
 func sendBatch(requests []Request) {
 	defer wg.Done()
 	batch, err := wreckhttp.Batch(requests)
