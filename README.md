@@ -11,7 +11,7 @@ E2E Load Testing Framework
 * Simple and Readable API
 * Works with Playwright (Go)
 * Works with Selenium (Go)
-* Works with any WebDriver variant
+* Works with All WebDriver Variants (Go)
 
 ## How it works
 
