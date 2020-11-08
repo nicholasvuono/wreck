@@ -11,9 +11,9 @@ var tests = []func(t *testing.T){
 }
 
 var options = Options{
-	Vus:        1,
-	Duration:   1,
-	Iterations: 0,
+	Vus:        3,
+	Duration:   0,
+	Iterations: 10,
 }
 
 var requests = []Request{
