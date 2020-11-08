@@ -25,7 +25,7 @@ var wg sync.WaitGroup
 //Global string slice to capture all responses
 var responses []string
 
-//Batch is a function to send batch requests based on specified load test configuration options.
+//Batch is a function to send batch requests based on specified load test configuration options
 func Batch(options Options, requests []Request) []string {
 	if options.Iterations != 0 && options.Duration == 0 {
 		concurrrentBatchIterations(options, requests)
@@ -54,7 +54,7 @@ func concurrentBatchDuration(options Options, requests []Request) {
 	}
 }
 
-//Sends batch requests concurrently based on the number of iterations specified.
+//Sends batch requests concurrently based on the number of iterations specified
 func concurrrentBatchIterations(options Options, requests []Request) {
 	for i := 0; i < options.Iterations; i++ {
 		for i := 0; i < options.Vus; i++ {
@@ -65,7 +65,7 @@ func concurrrentBatchIterations(options Options, requests []Request) {
 	}
 }
 
-//Logic to actually send the batch requests and append responses to the global slice.
+//Logic to actually send the batch requests and append responses to the global slice
 func sendBatch(requests []Request) {
 	defer wg.Done()
 	batch, err := wreckhttp.Batch(requests)
