@@ -14,3 +14,6 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 src/github.com/nicholasvuono/wreckhttp/
+src/github.com/danwakefield/fnmatch/
+src/github.com/mxschmitt/playwright-go/
+src/gopkg.in/square/go-jose.v2/
