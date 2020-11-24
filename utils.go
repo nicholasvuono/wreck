@@ -2,7 +2,6 @@ package wreck
 
 import (
 	"fmt"
-	"log"
 	"path/filepath"
 	"runtime"
 	"strconv"
@@ -21,9 +20,4 @@ func explain(err error) {
 		function := strings.TrimPrefix(filepath.Ext(runtime.FuncForPC(pc).Name()), ".")
 		fmt.Println("[" + time.Now().Format("Jan-02-06 3:04pm") + "] Error Warning:" + file + " " + function + "() line:" + strconv.Itoa(line) + " " + err.Error())
 	}
-}
-
-func timeIt(start time.Time, name string) {
-	elapsed := time.Since(start)
-	log.Printf("%s took %s", name, elapsed)
 }

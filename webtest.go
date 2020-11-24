@@ -8,13 +8,13 @@ import (
 )
 
 type WebTest struct {
-	Test       func() map[string]float64
+	Test       func() map[string]int64
 	Duration   int
 	Iterations int
 }
 
-func (w *WebTest) Run() []map[string]float64 {
-	var results []map[string]float64
+func (w *WebTest) Run() []map[string]int64 {
+	var results []map[string]int64
 	if w.Iterations != 0 && w.Duration == 0 {
 		results = append(results, webTestIterations(w.Iterations, w.Test))
 	} else if w.Iterations == 0 {
@@ -26,16 +26,16 @@ func (w *WebTest) Run() []map[string]float64 {
 	return results
 }
 
-func webTestIterations(iterations int, f func() map[string]float64) map[string]float64 {
-	var results map[string]float64
+func webTestIterations(iterations int, f func() map[string]int64) map[string]int64 {
+	var results map[string]int64
 	for i := 0; i < iterations; i++ {
 		results = f()
 	}
 	return results
 }
 
-func webTestDuration(duration int, f func() map[string]float64) map[string]float64 {
-	var results map[string]float64
+func webTestDuration(duration int, f func() map[string]int64) map[string]int64 {
+	var results map[string]int64
 	after := time.Now().Add(time.Duration(duration) * time.Second)
 	for {
 		now := time.Now()
@@ -47,8 +47,8 @@ func webTestDuration(duration int, f func() map[string]float64) map[string]float
 	return results
 }
 
-func step(label string, f func(*playwright.Page) *playwright.Page, page *playwright.Page) *playwright.Page {
-	defer timeIt(time.Now(), label)
+func step(label string, f func(*playwright.Page) *playwright.Page, page *playwright.Page) (string, int64, *playwright.Page) {
+	start := time.Now()
 	page = f(page)
-	return page
+	return label, time.Since(start).Milliseconds(), page
 }
