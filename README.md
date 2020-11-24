@@ -9,9 +9,7 @@ E2E Load Testing Framework
 
 * Pure Go Library
 * Simple and Readable API
-* Works with Playwright (Go)
-* Works with Selenium (Go)
-* Works with All WebDriver Variants (Go)
+* For use with Playwright (Go)
 
 ## How it works
 
@@ -27,8 +25,8 @@ N/A
 
 ## To-Do
 
-* Implement WebDriver Functionality
+* ~~Implement WebDriver Functionality~~
 * Add Full Examples
 * Add Simplest Working Examples
 * Add Request per Second to Options for Duration and Possibly Iteration (Batch Functionality)
-* Add Capture and Report End User Metrics/Timings API as Wrapper Function(WebDriver Functionality)
+* ~~Add Capture and Report End User Metrics/Timings API as Wrapper Function(WebDriver Functionality)~~
